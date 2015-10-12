@@ -1,0 +1,51 @@
+<?php
+/**
+ * ###############################################
+ *
+ * SWIFT Framework
+ * _______________________________________________
+ *
+ * @author         Varun Shoor
+ *
+ * @package        SWIFT
+ * @copyright      Copyright (c) 2001-2015, Kayako
+ * @license        http://www.kayako.com/license
+ * @link           http://www.kayako.com
+ *
+ * ###############################################
+ */
+
+/**
+ * Hook to extend the functionality after all the checks have been carried out whilst inserting/updating a User.
+ *
+ * @author Ruchi Kothari
+ */
+
+$_userEmailList = array();
+
+$_SWIFT->Database->Query("SELECT * FROM " . TABLE_PREFIX . "useremails WHERE linktype = '" . SWIFT_UserEmailManager::LINKTYPE_USER . "' AND linktypeid = '" . intval($_userID) . "'");
+while ($_SWIFT->Database->NextRecord())
+{
+	$_userEmailList[] = $_SWIFT->Database->Record['email'];
+}
+
+$this->_deletedEmailIDList = array();
+
+foreach ($_userEmailList as $_userEmail)
+{
+	if (!in_array($_userEmail, $this->_GetPOSTEmailContainer())) {
+		$this->_deletedEmailIDList[] = $_userEmail;
+	}
+}
+
+$this->_newEmailIDList = array();
+
+foreach ($this->_GetPOSTEmailContainer() as $_email)
+{
+	if (!in_array($_email, $_userEmailList)) {
+		$this->_newEmailIDList[] = $_email;
+	}
+}
+
+$this->_existingEmailList = array_diff($this->_GetPOSTEmailContainer(), $this->_newEmailIDList);
+?>

@@ -1,0 +1,49 @@
+<?php
+/**
+ * ###############################################
+ *
+ * SWIFT Framework
+ * _______________________________________________
+ *
+ * @author         Varun Shoor
+ *
+ * @package        SWIFT
+ * @copyright      Copyright (c) 2001-2015, Kayako
+ * @license        http://www.kayako.com/license
+ * @link           http://www.kayako.com
+ *
+ * ###############################################
+ */
+
+/**
+ * Hook to extend the functionality when the tabs are rendered in the 'User' section of staff control panel.
+ *
+ * @author Ruchi Kothari
+ */
+
+$_apiKey = $this->Settings->Get('mc_apikey');
+
+if (!empty($_apiKey)) {
+	$_SWIFT = SWIFT::GetInstance();
+	$_SWIFT->Language->LoadApp('mailchimp', APP_MAILCHIMP);
+
+	$_subscribedYes = 'checked';
+	$_subscribedNo = '';
+
+	if ($_mode == SWIFT_UserInterface::MODE_EDIT) {
+		// Retrieve user unsubscribe property
+		$_unsubscribeStatus = SWIFT_UserProperty::RetrieveOnUser($_SWIFT_UserObject, 'mc_unsubscribe');
+
+		if ($_unsubscribeStatus == 1) {
+			$_subscribedNo = 'checked';
+			$_subscribedYes = '';
+		}
+	}
+
+	$_subscribeHTML = '<input type="radio" id="subscribenewsletter_yes" name="unsubscribenewsletter" value="0"' . $_subscribedYes . '> ' . $_SWIFT->Language->Get('yes') . ' &nbsp;&nbsp;';
+	$_subscribeHTML .= '<input type="radio" id="unsubscribenewsletter_no" name="unsubscribenewsletter" value="1" ' . $_subscribedNo . '> ' . $_SWIFT->Language->Get('no');
+
+	$_GeneralTabObject->DefaultDescriptionRow($_SWIFT->Language->Get('mc_subscribeuser'), $_SWIFT->Language->Get('d_mc_subscribeuser'), $_subscribeHTML);
+}
+
+?>

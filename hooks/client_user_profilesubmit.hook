@@ -1,0 +1,39 @@
+<?php
+/**
+ * ###############################################
+ *
+ * SWIFT Framework
+ * _______________________________________________
+ *
+ * @author         Varun Shoor
+ *
+ * @package        SWIFT
+ * @copyright      Copyright (c) 2001-2015, Kayako
+ * @license        http://www.kayako.com/license
+ * @link           http://www.kayako.com
+ *
+ * ###############################################
+ */
+
+/**
+ * Hook to extend the functionality when a User is updated
+ *
+ * @author Ruchi Kothari
+ */
+
+$_deleteUserEmailList = array();
+
+foreach ($_deleteUserEmailIDList as $_userEmailID)
+{
+	$_deleteUserEmailList[] = $_userEmailList[$_userEmailID];
+}
+
+$_userDetails = array();
+$_userDetails['fullname'] = $_POST['fullname'];
+$_userDetails['emails']['deleted'] = IIF(is_array($_deleteUserEmailList), $_deleteUserEmailList, array());
+$_userDetails['emails']['new'] = IIF(is_array($_finalNewEmailList), $_finalNewEmailList, array());
+$_userDetails['emails']['existing'] = IIF(is_array($_incomingExistingEmailList), $_incomingExistingEmailList, array());
+
+$_SWIFT_UserSyncManagerObject = new SWIFT_UserSyncManager();
+$_subscriptionResult = $_SWIFT_UserSyncManagerObject->PerformAction($_SWIFT->User, $_POST['unsubscribenewsletter'], $_userDetails);
+?>

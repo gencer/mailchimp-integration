@@ -1,0 +1,46 @@
+<?php
+/**
+ * ###############################################
+ *
+ * SWIFT Framework
+ * _______________________________________________
+ *
+ * @author         Varun Shoor
+ *
+ * @package        SWIFT
+ * @copyright      Copyright (c) 2001-2015, Kayako
+ * @license        http://www.kayako.com/license
+ * @link           http://www.kayako.com
+ *
+ * ###############################################
+ */
+
+/**
+ * Hook to extend the functionality when a User is deleted.
+ *
+ * @author Ruchi Kothari
+ */
+
+$_emails = array();
+
+$_SWIFT->Database->Query("SELECT * FROM " . TABLE_PREFIX . "useremails WHERE linktype = '" . SWIFT_UserEmail::LINKTYPE_USER . "' AND linktypeid IN (" . BuildIN($_userIDList) . ")");
+
+while ($_SWIFT->Database->NextRecord())
+{
+	$_SWIFT_UserObject = new SWIFT_User($_SWIFT->Database->Record['linktypeid']);
+
+	// Retrieve user unsubscribe property
+	$_unsubscribeStatus = SWIFT_UserProperty::RetrieveOnUser($_SWIFT_UserObject, 'mc_unsubscribe');
+
+	if ($_unsubscribeStatus == 1) {
+		SWIFT_UserProperty::DeleteOnName($_SWIFT_UserObject, 'mc_unsubscribe');
+	} else {
+		$_emails[] = $_SWIFT->Database->Record['email'];
+	}
+}
+
+if (!empty($_emails)) {
+	$_SWIFT_UserSyncManagerObject = new SWIFT_UserSyncManager();
+	$_subscriptionResult = $_SWIFT_UserSyncManagerObject->MemberUnsubscribe($_emails, true);
+}
+?>
