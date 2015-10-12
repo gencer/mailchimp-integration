@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<swiftlanguage>
+	<title>English (U.S.)</title>
+	<isocode>en-us</isocode>
+	<author>Kayako Infotech Ltd.</author>
+	<charset>UTF-8</charset>
+	<textdirection>LTR</textdirection>
+	<version>0</version>
+	<flagicon>{$themepath}us.gif</flagicon>
+
+	<phrase section="users" code="subscribetonewsletter">Subscribe to newsletter</phrase>
+</swiftlanguage>
