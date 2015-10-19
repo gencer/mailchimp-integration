@@ -23,3 +23,16 @@ Features
 Supported versions
 =======================
 * Kayako: 4.51.1891 and above
+
+Installation Steps
+=======================
+1. Download and extract MailChimp integration.
+2. Make a symlink of /src in helpdesk_installation/__apps/mailchimp and make sure all files of src folder are available under helpdesk_installation/__apps/mailchimp.
+4. Now navigate to Admin Panel of your helpdesk and click on 'Apps' in left side menu.
+5. Click on MailChimp and then click on Install button, this will install this app.
+6. Click on Settings option from left side menu and click on MailChimp.
+7. View the Mailchimp Settings and configure the fields.
+8. Get the API Key from Mailchimp account. Go To Accounts->API and Authorized Apps. If there is no API Key generated, then click on 'Add A Key' otherwise copy the existing API Key.
+9. After entering the API Keys and 'Send Users an Email to Confirm Subscription' to Yes , Click on Update button on above tool bar. View the updated settings and Mailchips lists will be shown there.
+10. Now if new users subscribe to the newsletters by Checking the box 'Subscribe to newsletter', will be sent an email to subscribe the mailchimp. By authorizing the subscription, user will be opted to the newsletter.
+11. View the list of subscribed users in Mailchimp. 
